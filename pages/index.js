@@ -1,12 +1,15 @@
-import Head from "next/head";
+import HomePage from "../components/LV3/HomePage";
+import data from "../utils/data";
 
-export default function Home() {
-  return (
-    <>
-      <Head>
-        <title>Home Page</title>
-      </Head>
-      <h1 className="text-3xl font-bold">Home Page</h1>
-    </>
-  );
+export default function Home(props) {
+  return <HomePage products={props.products} />;
+}
+
+export async function getStaticProps(context) {
+  return {
+    props: {
+      products: data.products,
+    },
+    revalidate: 1,
+  };
 }
