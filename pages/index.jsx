@@ -1,8 +1,8 @@
 import Head from "next/head";
-import React from "react";
-import ProductItem from "../LV2/Product/ProductItem";
+import ProductItem from "../components/LV2/Product/ProductItem";
+import data from "../utils/data";
 
-const HomePage = ({ products }) => {
+export default function Home({ products }) {
   return (
     <>
       <Head>
@@ -15,6 +15,13 @@ const HomePage = ({ products }) => {
       </div>
     </>
   );
-};
+}
 
-export default HomePage;
+export async function getStaticProps() {
+  return {
+    props: {
+      products: data.products,
+    },
+    revalidate: 1,
+  };
+}

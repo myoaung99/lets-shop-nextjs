@@ -20,18 +20,18 @@ const ProductItem = ({ product }) => {
         />
       </Link>
 
-      <div className="flex flex-col items-center pb-3">
+      <div className="flex flex-col items-center pb-3 pt-1">
         <Link
           href={{
             pathname: "/[slug]",
             query: { slug: product.slug },
           }}
         >
-          <h2 className="text-lg">{product.name}</h2>
+          <h2 className="text-lg text-black">{product.name}</h2>
         </Link>
 
-        <p className="mb-2">{product.brand}</p>
-        <p className="font-semibold mb-1">${product.price}</p>
+        <p className="mb-2 text-black">{product.brand}</p>
+        <p className="font-semibold mb-1 text-black">${product.price}</p>
         <button className="primary-button" type="button">
           Add To Cart
         </button>
