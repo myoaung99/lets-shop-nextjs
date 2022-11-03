@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import data from "../utils/data";
 import Image from "next/image";
+import { CartContext } from "../Store/context";
 
 const ProductDetail = (props) => {
   const router = useRouter();
   const { slug } = router.query;
+  const cartCtx = useContext(CartContext);
+
   const backHandler = () => {
     router.back();
   };
 
   const product = data.products.find((p) => p.slug === slug);
+
+  const addToCartHandler = () => {
+    cartCtx.addToCart(product);
+  };
+
+  console.log(cartCtx);
+
   if (!product) {
     return <h1>Product not found.</h1>;
   }
@@ -60,7 +70,9 @@ const ProductDetail = (props) => {
             </div>
           </div>
 
-          <button className="primary-button w-full">Add to Cart</button>
+          <button className="primary-button w-full" onClick={addToCartHandler}>
+            Add to Cart
+          </button>
         </div>
       </div>
     </>

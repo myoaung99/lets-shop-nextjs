@@ -3,8 +3,8 @@ import { createContext } from "react";
 const initialState = {
   cart: {
     cartItems: [],
-    addToCart: (item) => {},
   },
+  addToCart: (item) => {},
 };
 
 export const CartContext = createContext(initialState);
