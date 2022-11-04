@@ -8,6 +8,7 @@ const initialState = {
   },
   addToCart: (item) => {},
   removeFromCart: (slug) => {},
+  updateItemQuantity: (item, quantity) => {},
 };
 
 export const Context = createContext(initialState);

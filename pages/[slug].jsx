@@ -5,7 +5,7 @@ import data from "../utils/data";
 import Image from "next/image";
 import { Context } from "../Store/context";
 
-const ProductDetail = (props) => {
+const ProductDetail = () => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -20,7 +20,7 @@ const ProductDetail = (props) => {
   };
 
   const addToCartHandler = () => {
-    cartCtx.addToCart(product);
+    cartCtx.addToCart(product, 1);
     setInStock((prev) => prev - 1);
   };
 

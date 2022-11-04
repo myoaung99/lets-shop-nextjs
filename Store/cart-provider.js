@@ -76,6 +76,37 @@ const cartReducer = (state, action) => {
         },
       };
     }
+
+    case types.CART_UPDATE_QUANTITY: {
+      const { item: updateItem, quantity: newQuantity } = action.payload;
+      const existItem = state.cart.cartItems.find(
+        (item) => item.slug === updateItem.slug
+      );
+      const existItemIndex = state.cart.cartItems.findIndex(
+        (item) => item.slug === existItem.slug
+      );
+      existItem.quantity = newQuantity;
+      const updatedCartItems = [...state.cart.cartItems];
+      updatedCartItems[existItemIndex] = existItem;
+      const itemCount = updatedCartItems.reduce(
+        (total, item) => (total = total + item.quantity),
+        0
+      );
+
+      const totalPrice = updatedCartItems.reduce(
+        (total, item) => (total = total + item.price * item.quantity),
+        0
+      );
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          cartItems: updatedCartItems,
+          itemCount,
+          totalPrice,
+        },
+      };
+    }
   }
   return state;
 };
@@ -93,6 +124,13 @@ const CartProvider = ({ children }) => {
     });
   };
 
+  const updateItemQuantity = (item, quantity) => {
+    dispatchCartAction({
+      type: types.CART_UPDATE_QUANTITY,
+      payload: { item, quantity },
+    });
+  };
+
   const removeFromCartHandler = (slug) => {
     dispatchCartAction({ type: types.CART_REMOVE_ITEM, payload: slug });
   };
@@ -101,6 +139,7 @@ const CartProvider = ({ children }) => {
     ...cartState,
     addToCart: addToCartHandler,
     removeFromCart: removeFromCartHandler,
+    updateItemQuantity: updateItemQuantity,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

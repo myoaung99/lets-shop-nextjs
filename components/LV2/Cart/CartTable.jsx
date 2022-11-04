@@ -10,6 +10,11 @@ const CartTable = ({ items }) => {
     cartCtx.removeFromCart(slug);
   };
 
+  const updateQuantityHandler = (item, event) => {
+    const quantity = Number(event.target.value);
+    cartCtx.updateItemQuantity(item, quantity);
+  };
+
   return (
     <table class="table-auto  w-full mt-5">
       <thead>
@@ -35,7 +40,18 @@ const CartTable = ({ items }) => {
 
               <h3>{item.name}</h3>
             </td>
-            <td className="p-3 text-center border-b">{item.quantity} </td>
+            <td className="p-3 text-center border-b">
+              <select
+                value={item.quantity}
+                onChange={(e) => updateQuantityHandler(item, e)}
+              >
+                {[...Array(item.countInStock).keys()].map((qty) => (
+                  <option key={qty + 1} value={qty + 1}>
+                    {qty + 1}
+                  </option>
+                ))}
+              </select>
+            </td>
             <td className="p-3 text-center border-b">${item.price}</td>
             <td className="p-3 border-b">
               <XCircleIcon
