@@ -5,6 +5,7 @@ const initialState = {
     cartItems: [],
   },
   addToCart: (item) => {},
+  removeFromCart: (slug) => {},
 };
 
 export const Context = createContext(initialState);

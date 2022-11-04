@@ -35,6 +35,13 @@ const cartReducer = (state, action) => {
 
       return { ...state, cart: { ...state.cart, cartItems: updatedItems } };
     }
+    case types.CART_REMOVE_ITEM: {
+      const slug = action.payload;
+      const updatedCartItems = state.cart.cartItems.filter(
+        (item) => item.slug !== slug
+      );
+      return { ...state, cart: { ...state.cart, cartItems: updatedCartItems } };
+    }
   }
   return state;
 };
@@ -52,9 +59,14 @@ const CartProvider = ({ children }) => {
     });
   };
 
+  const removeFromCartHandler = (slug) => {
+    dispatchCartAction({ type: types.CART_REMOVE_ITEM, payload: slug });
+  };
+
   const value = {
     ...cartState,
     addToCart: addToCartHandler,
+    removeFromCart: removeFromCartHandler,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

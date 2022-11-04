@@ -41,7 +41,7 @@ const Layout = ({ children, title }) => {
             <div className="space-x-4">
               <Link href="/cart" className="text-black">
                 Cart
-                <span className="p-1 ml-1 rounded-full bg-red-600 text-white text-sm">
+                <span className="bg-red-600 px-2 py-1 ml-1 rounded-full text-white text-sm">
                   {cartCount}
                 </span>
               </Link>
