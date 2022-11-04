@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { CartContext } from "./context";
+import { Context } from "./context";
 import types from "./types";
 
 const cartDefaultValue = {
@@ -39,7 +39,7 @@ const cartReducer = (state, action) => {
   return state;
 };
 
-const Provider = ({ children }) => {
+const CartProvider = ({ children }) => {
   const [cartState, dispatchCartAction] = useReducer(
     cartReducer,
     cartDefaultValue
@@ -57,7 +57,7 @@ const Provider = ({ children }) => {
     addToCart: addToCartHandler,
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export default Provider;
+export default CartProvider;

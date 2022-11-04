@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import CartProvider from "../Store/provider";
+import CartProvider from "../Store/cart-provider";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {

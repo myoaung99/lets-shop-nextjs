@@ -3,24 +3,26 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import data from "../utils/data";
 import Image from "next/image";
-import { CartContext } from "../Store/context";
+import { Context } from "../Store/context";
 
 const ProductDetail = (props) => {
   const router = useRouter();
   const { slug } = router.query;
-  const cartCtx = useContext(CartContext);
+
+  const product = data.products.find((p) => p.slug === slug);
+
+  const [inStock, setInStock] = useState(product.countInStock);
+
+  const cartCtx = useContext(Context);
 
   const backHandler = () => {
     router.back();
   };
 
-  const product = data.products.find((p) => p.slug === slug);
-
   const addToCartHandler = () => {
     cartCtx.addToCart(product);
+    setInStock((prev) => prev - 1);
   };
-
-  console.log(cartCtx);
 
   if (!product) {
     return <h1>Product not found.</h1>;
@@ -66,13 +68,22 @@ const ProductDetail = (props) => {
             </div>
             <div className="flex justify-between">
               <p>Status</p>
-              <p>{product.countInStock > 0 ? "In stock" : "Out of stock"}</p>
+              <p>{inStock > 0 ? `${inStock} - instock` : "Out of stock"}</p>
             </div>
           </div>
 
-          <button className="primary-button w-full" onClick={addToCartHandler}>
-            Add to Cart
-          </button>
+          {inStock > 0 ? (
+            <button
+              onClick={addToCartHandler}
+              className="primary-button w-full"
+            >
+              Add to Cart
+            </button>
+          ) : (
+            <button className="primary-button-disabled w-full">
+              Add to Cart
+            </button>
+          )}
         </div>
       </div>
     </>

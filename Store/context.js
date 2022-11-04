@@ -7,4 +7,4 @@ const initialState = {
   addToCart: (item) => {},
 };
 
-export const CartContext = createContext(initialState);
+export const Context = createContext(initialState);
