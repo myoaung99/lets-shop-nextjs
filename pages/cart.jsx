@@ -7,7 +7,7 @@ import { Context } from "../Store/context";
 const CartScreen = () => {
   const cartCtx = useContext(Context);
   const {
-    cart: { cartItems },
+    cart: { cartItems, itemCount, totalPrice },
   } = cartCtx;
 
   return (
@@ -25,7 +25,11 @@ const CartScreen = () => {
           <div className="md:col-span-3 ">
             <CartTable items={cartItems} />
           </div>
-          <CartCheckout items={cartItems} />
+          <CartCheckout
+            items={cartItems}
+            itemCount={itemCount}
+            totalPrice={totalPrice}
+          />
         </div>
       )}
     </>

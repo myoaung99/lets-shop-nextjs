@@ -11,7 +11,7 @@ const CartTable = ({ items }) => {
   };
 
   return (
-    <table class="table-auto border-separate border-spacing-2 w-full mt-5">
+    <table class="table-auto  w-full mt-5">
       <thead>
         <tr>
           <th className="text-left">Item</th>
@@ -23,7 +23,7 @@ const CartTable = ({ items }) => {
       <tbody>
         {items.map((item) => (
           <tr key={item.slug}>
-            <td className="flex items-center">
+            <td className="p-3 flex items-center border-b">
               <div className="w-20">
                 <Image
                   src={item.image}
@@ -35,9 +35,9 @@ const CartTable = ({ items }) => {
 
               <h3>{item.name}</h3>
             </td>
-            <td className="text-center">{item.quantity} </td>
-            <td className="text-center">${item.price}</td>
-            <td>
+            <td className="p-3 text-center border-b">{item.quantity} </td>
+            <td className="p-3 text-center border-b">${item.price}</td>
+            <td className="p-3 border-b">
               <XCircleIcon
                 className="mx-auto text-red-500 cursor-pointer hover:text-red-600 active:text-red-700"
                 width={25}

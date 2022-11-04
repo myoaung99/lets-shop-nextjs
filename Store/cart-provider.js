@@ -5,6 +5,8 @@ import types from "./types";
 const cartDefaultValue = {
   cart: {
     cartItems: [],
+    itemCount: 0,
+    totalPrice: 0,
   },
 };
 
@@ -33,14 +35,46 @@ const cartReducer = (state, action) => {
         updatedItems = [...state.cart.cartItems, newItem];
       }
 
-      return { ...state, cart: { ...state.cart, cartItems: updatedItems } };
+      const itemCount = updatedItems.reduce(
+        (total, item) => (total = total + item.quantity),
+        0
+      );
+
+      const totalPrice = updatedItems.reduce(
+        (total, item) => (total = total + item.price * item.quantity),
+        0
+      );
+
+      return {
+        ...state,
+        cart: { ...state.cart, cartItems: updatedItems, itemCount, totalPrice },
+      };
     }
     case types.CART_REMOVE_ITEM: {
       const slug = action.payload;
       const updatedCartItems = state.cart.cartItems.filter(
         (item) => item.slug !== slug
       );
-      return { ...state, cart: { ...state.cart, cartItems: updatedCartItems } };
+
+      const itemCount = updatedCartItems.reduce(
+        (total, item) => (total = total + item.quantity),
+        0
+      );
+
+      const totalPrice = updatedCartItems.reduce(
+        (total, item) => (total = total + item.price * item.quantity),
+        0
+      );
+
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          cartItems: updatedCartItems,
+          itemCount,
+          totalPrice,
+        },
+      };
     }
   }
   return state;

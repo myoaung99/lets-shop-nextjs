@@ -4,19 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../Store/context";
 
 const Layout = ({ children, title }) => {
-  const [cartCount, setCartCount] = useState(0);
   const cartCtx = useContext(Context);
-
-  useEffect(() => {
-    if (cartCtx.cart.cartItems && cartCtx.cart.cartItems.length > 0) {
-      setCartCount(
-        cartCtx.cart.cartItems.reduce(
-          (total, item) => (total = total + item.quantity),
-          0
-        )
-      );
-    }
-  }, [cartCtx.cart.cartItems]);
+  const itemCount = cartCtx.cart.itemCount;
 
   return (
     <main className="bg-white">
@@ -42,7 +31,7 @@ const Layout = ({ children, title }) => {
               <Link href="/cart" className="text-black">
                 Cart
                 <span className="bg-red-600 px-2 py-1 ml-1 rounded-full text-white text-sm">
-                  {cartCount}
+                  {itemCount}
                 </span>
               </Link>
               <Link href="/login" className="text-black">
