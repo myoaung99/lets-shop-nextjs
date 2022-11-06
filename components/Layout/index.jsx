@@ -1,11 +1,16 @@
 import Head from "next/head";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../Store/context";
 
 const Layout = ({ children, title }) => {
   const cartCtx = useContext(Context);
   const itemCount = cartCtx.cart.itemCount;
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    setCartCount(itemCount);
+  }, [itemCount]);
 
   return (
     <main className="bg-white">
@@ -31,7 +36,7 @@ const Layout = ({ children, title }) => {
               <Link href="/cart" className="text-black">
                 Cart
                 <span className="bg-red-600 px-2 py-1 ml-1 rounded-full text-white text-sm">
-                  {itemCount}
+                  {cartCount}
                 </span>
               </Link>
               <Link href="/login" className="text-black">

@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useContext } from "react";
 import CartCheckout from "../components/LV2/Cart/CartCheckout";
@@ -36,4 +37,9 @@ const CartScreen = () => {
   );
 };
 
-export default CartScreen;
+//* export component with next/dynamic and ssr false option makes the component
+//* to render lazily on client by depending on data from the client side
+
+//* use next/dynamic and false ssr when the component need to dependend the data from the client size
+//* eg. cookies, widows API
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });

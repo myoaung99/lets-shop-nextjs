@@ -1,12 +1,37 @@
 import { useReducer } from "react";
 import { Context } from "./context";
+import Cookies from "js-cookie";
 import types from "./types";
+
+//*===============UTIL FUNCTIONS==================
+const getTotalItem = (items) => {
+  return items.reduce((total, item) => (total = total + item.quantity), 0);
+};
+
+const getTotalPrice = (items) => {
+  return items.reduce(
+    (total, item) => (total = total + item.price * item.quantity),
+    0
+  );
+};
+
+const saveToCookies = (items, count, total) => {
+  Cookies.set("cartItems", JSON.stringify(items));
+  Cookies.set("itemCount", count);
+  Cookies.set("totalPrice", total);
+};
 
 const cartDefaultValue = {
   cart: {
-    cartItems: [],
-    itemCount: 0,
-    totalPrice: 0,
+    cartItems: Cookies.get("cartItems")
+      ? JSON.parse(Cookies.get("cartItems"))
+      : [],
+    itemCount: Cookies.get("itemCount")
+      ? JSON.parse(Cookies.get("itemCount"))
+      : 0,
+    totalPrice: Cookies.get("totalPrice")
+      ? JSON.parse(Cookies.get("totalPrice"))
+      : 0,
   },
 };
 
@@ -18,10 +43,10 @@ const cartReducer = (state, action) => {
         (item) => item.slug === newItem.slug
       );
 
-      let updatedItems;
+      let updatedCartItems;
 
       if (existItem) {
-        updatedItems = state.cart.cartItems.map((item) =>
+        updatedCartItems = state.cart.cartItems.map((item) =>
           item.slug === existItem.slug
             ? {
                 ...newItem,
@@ -32,22 +57,21 @@ const cartReducer = (state, action) => {
             : item
         );
       } else {
-        updatedItems = [...state.cart.cartItems, newItem];
+        updatedCartItems = [...state.cart.cartItems, newItem];
       }
 
-      const itemCount = updatedItems.reduce(
-        (total, item) => (total = total + item.quantity),
-        0
-      );
-
-      const totalPrice = updatedItems.reduce(
-        (total, item) => (total = total + item.price * item.quantity),
-        0
-      );
+      const itemCount = getTotalItem(updatedCartItems);
+      const totalPrice = getTotalPrice(updatedCartItems);
+      saveToCookies(updatedCartItems, itemCount, totalPrice);
 
       return {
         ...state,
-        cart: { ...state.cart, cartItems: updatedItems, itemCount, totalPrice },
+        cart: {
+          ...state.cart,
+          cartItems: updatedCartItems,
+          itemCount,
+          totalPrice,
+        },
       };
     }
     case types.CART_REMOVE_ITEM: {
@@ -56,15 +80,9 @@ const cartReducer = (state, action) => {
         (item) => item.slug !== slug
       );
 
-      const itemCount = updatedCartItems.reduce(
-        (total, item) => (total = total + item.quantity),
-        0
-      );
-
-      const totalPrice = updatedCartItems.reduce(
-        (total, item) => (total = total + item.price * item.quantity),
-        0
-      );
+      const itemCount = getTotalItem(updatedCartItems);
+      const totalPrice = getTotalPrice(updatedCartItems);
+      saveToCookies(updatedCartItems, itemCount, totalPrice);
 
       return {
         ...state,
@@ -87,16 +105,13 @@ const cartReducer = (state, action) => {
       );
       existItem.quantity = newQuantity;
       const updatedCartItems = [...state.cart.cartItems];
-      updatedCartItems[existItemIndex] = existItem;
-      const itemCount = updatedCartItems.reduce(
-        (total, item) => (total = total + item.quantity),
-        0
-      );
 
-      const totalPrice = updatedCartItems.reduce(
-        (total, item) => (total = total + item.price * item.quantity),
-        0
-      );
+      updatedCartItems[existItemIndex] = existItem;
+
+      const itemCount = getTotalItem(updatedCartItems);
+      const totalPrice = getTotalPrice(updatedCartItems);
+      saveToCookies(updatedCartItems, itemCount, totalPrice);
+
       return {
         ...state,
         cart: {
