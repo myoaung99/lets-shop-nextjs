@@ -16,7 +16,7 @@ const CartTable = ({ items }) => {
   };
 
   return (
-    <table class="table-auto  w-full mt-5">
+    <table className="table-auto  w-full mt-5">
       <thead>
         <tr>
           <th className="text-left">Item</th>

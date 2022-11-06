@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const CartCheckout = ({ itemCount, totalPrice }) => {
@@ -17,7 +18,9 @@ const CartCheckout = ({ itemCount, totalPrice }) => {
           </div>
         </li>
         <li>
-          <button className="primary-button w-full">Checkout</button>
+          <Link href="login?redirect=/shipping">
+            <button className="primary-button w-full">Checkout</button>
+          </Link>
         </li>
       </ul>
     </div>
