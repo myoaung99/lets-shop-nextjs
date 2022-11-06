@@ -46,7 +46,7 @@ const Layout = ({ children, title }) => {
           </nav>
         </header>
         <main className="container m-auto mt-4 px-4">{children}</main>
-        <footer className="h-10 flex justify-center items-center text-neutral-500">
+        <footer className="h-10 mt-2 flex justify-center items-center text-neutral-500">
           Copyright 2022 Let`s Shop
         </footer>
       </div>

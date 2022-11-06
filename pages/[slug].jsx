@@ -11,7 +11,7 @@ const ProductDetail = () => {
 
   const product = data.products.find((p) => p.slug === slug);
 
-  const [inStock, setInStock] = useState(product.countInStock);
+  const [inStock, setInStock] = useState(product?.countInStock);
 
   const cartCtx = useContext(Context);
 
