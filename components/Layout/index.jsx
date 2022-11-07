@@ -5,6 +5,9 @@ import { Context } from "../../Store/context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react";
+import { Menu } from "@headlessui/react";
+import DropdownMenuItem from "../LV2/UI/DropdownMenuItem";
+import { signOut } from "next-auth/react";
 
 const Layout = ({ children, title }) => {
   const { status, data: session } = useSession();
@@ -16,6 +19,11 @@ const Layout = ({ children, title }) => {
   useEffect(() => {
     setCartCount(itemCount);
   }, [itemCount]);
+
+  const signOutHandler = () => {
+    cartCtx.resetCart();
+    signOut({ callbackUrl: "/login" });
+  };
 
   return (
     <main className="bg-white">
@@ -29,6 +37,7 @@ const Layout = ({ children, title }) => {
       </Head>
       {/* //*==================== REACT TOASTIFY ============================= */}
       <ToastContainer position="bottom-left" limit={1} />
+
       <div className="flex flex-col min-h-screen justify-between">
         <header>
           <nav className="h-12 shadow flex justify-between items-center px-5">
@@ -48,7 +57,20 @@ const Layout = ({ children, title }) => {
               {status === "loading" ? (
                 "Loading"
               ) : session?.user ? (
-                <p className="ml-1 inline">{session.user.name}</p>
+                <Menu as="div" className="relative inline">
+                  <Menu.Button className="text-amber-500 hover:text-amber-600 py-1">
+                    {session.user.name}
+                  </Menu.Button>
+                  <Menu.Items className="absolute border w-32 rounded right-0 h-fit bg-white shadow-lg">
+                    <DropdownMenuItem href="/profile">Profile</DropdownMenuItem>
+                    <DropdownMenuItem href="/order-history">
+                      Order History
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={signOutHandler} href="/logout">
+                      Logout
+                    </DropdownMenuItem>
+                  </Menu.Items>
+                </Menu>
               ) : (
                 <Link href="/login" className="text-black">
                   Login

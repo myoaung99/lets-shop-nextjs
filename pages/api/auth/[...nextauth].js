@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 
 export const authOptions = {
   //*=============== Fire after doing an action =================
+  //* jwt -> session pipeline is used to get user info on the client-side
   callbacks: {
     async jwt({ token, user }) {
       if (user?._id) token._id = user._id;

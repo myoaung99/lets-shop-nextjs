@@ -122,6 +122,12 @@ const cartReducer = (state, action) => {
         },
       };
     }
+
+    case types.CART_RESET: {
+      Cookies.remove("cartItems");
+      Cookies.remove("itemCount");
+      Cookies.remove("totalPrice");
+    }
   }
   return state;
 };
@@ -150,11 +156,16 @@ const CartProvider = ({ children }) => {
     dispatchCartAction({ type: types.CART_REMOVE_ITEM, payload: slug });
   };
 
+  const resetCartHandler = () => {
+    dispatchCartAction({ type: types.CART_RESET });
+  };
+
   const value = {
     ...cartState,
     addToCart: addToCartHandler,
     removeFromCart: removeFromCartHandler,
     updateItemQuantity: updateItemQuantity,
+    resetCart: resetCartHandler,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
