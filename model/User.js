@@ -27,5 +27,5 @@ const userSchema = new Schema(
 );
 
 //*=============== Check if the model User is already created or not ===============
-const User = mongoose.models.User || mongoose.model("user", userSchema);
+const User = mongoose.models.user || mongoose.model("user", userSchema);
 export default User;

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { getError } from "../utils/handleError";
+import { toast } from "react-toastify";
 
 const loginSchema = yup.object({
   email: yup.string().email().required("Email is required."),
@@ -18,8 +22,32 @@ const LoginScreen = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Login data => ", data);
+  const { data: session } = useSession();
+
+  const router = useRouter();
+  const { redirect } = router.query;
+
+  //*=============== when user is login and if there is a redirect do it alse go index ==================
+  useEffect(() => {
+    if (session?.user) {
+      router.push(redirect || "/");
+    }
+  }, [router, session, redirect]);
+
+  //*========= client side signIn function from next-auth===================
+  const onSubmit = async ({ email, password }) => {
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      if (result.error) {
+        toast.error(result.error);
+      }
+    } catch (err) {
+      toast.error(getError(err));
+    }
   };
 
   return (
