@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import data from "../utils/data";
@@ -9,11 +9,25 @@ const ProductDetail = () => {
   const router = useRouter();
   const { slug } = router.query;
 
+  const cartCtx = useContext(Context);
+  const itemCount = cartCtx.cart.itemCount;
+
   const product = data.products.find((p) => p.slug === slug);
 
-  const [inStock, setInStock] = useState(product?.countInStock);
+  const [inStock, setInStock] = useState(0);
 
-  const cartCtx = useContext(Context);
+  useEffect(() => {
+    if (product) {
+      const item = cartCtx.cart.cartItems.find(
+        (item) => item.slug === product.slug
+      );
+      if (item) {
+        setInStock(product.countInStock - item.quantity || 0);
+      } else {
+        setInStock(product.countInStock);
+      }
+    }
+  }, [product, itemCount, cartCtx.cart]);
 
   const backHandler = () => {
     router.back();

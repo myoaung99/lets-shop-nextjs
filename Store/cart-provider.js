@@ -16,23 +16,31 @@ const getTotalPrice = (items) => {
 };
 
 const saveToCookies = (items, count, total) => {
-  Cookies.set("cartItems", JSON.stringify(items));
-  Cookies.set("itemCount", count);
-  Cookies.set("totalPrice", total);
+  Cookies.set(
+    "cart",
+    JSON.stringify({
+      cartItems: items,
+      itemCount: count,
+      totalPrice: total,
+    })
+  );
 };
 
 const cartDefaultValue = {
   cart: {
-    cartItems: Cookies.get("cartItems")
-      ? JSON.parse(Cookies.get("cartItems"))
+    cartItems: Cookies.get("cart")
+      ? JSON.parse(Cookies.get("cart")).cartItems
       : [],
-    itemCount: Cookies.get("itemCount")
-      ? JSON.parse(Cookies.get("itemCount"))
+    itemCount: Cookies.get("cart")
+      ? JSON.parse(Cookies.get("cart")).itemCount
       : 0,
-    totalPrice: Cookies.get("totalPrice")
-      ? JSON.parse(Cookies.get("totalPrice"))
+    totalPrice: Cookies.get("cart")
+      ? JSON.parse(Cookies.get("cart")).totalPrice
       : 0,
   },
+  shippingAddress: Cookies.get("shippingAddress")
+    ? JSON.parse(Cookies.get("shippingAddress"))
+    : {},
 };
 
 const cartReducer = (state, action) => {
@@ -94,39 +102,54 @@ const cartReducer = (state, action) => {
         },
       };
     }
+    case types.CART_UPDATE_QUANTITY:
+      {
+        const { item: updateItem, quantity: newQuantity } = action.payload;
+        const existItem = state.cart.cartItems.find(
+          (item) => item.slug === updateItem.slug
+        );
+        const existItemIndex = state.cart.cartItems.findIndex(
+          (item) => item.slug === existItem.slug
+        );
+        existItem.quantity = newQuantity;
+        const updatedCartItems = [...state.cart.cartItems];
 
-    case types.CART_UPDATE_QUANTITY: {
-      const { item: updateItem, quantity: newQuantity } = action.payload;
-      const existItem = state.cart.cartItems.find(
-        (item) => item.slug === updateItem.slug
-      );
-      const existItemIndex = state.cart.cartItems.findIndex(
-        (item) => item.slug === existItem.slug
-      );
-      existItem.quantity = newQuantity;
-      const updatedCartItems = [...state.cart.cartItems];
+        updatedCartItems[existItemIndex] = existItem;
 
-      updatedCartItems[existItemIndex] = existItem;
+        const itemCount = getTotalItem(updatedCartItems);
+        const totalPrice = getTotalPrice(updatedCartItems);
+        saveToCookies(updatedCartItems, itemCount, totalPrice);
 
-      const itemCount = getTotalItem(updatedCartItems);
-      const totalPrice = getTotalPrice(updatedCartItems);
-      saveToCookies(updatedCartItems, itemCount, totalPrice);
-
-      return {
-        ...state,
-        cart: {
-          ...state.cart,
-          cartItems: updatedCartItems,
-          itemCount,
-          totalPrice,
-        },
-      };
-    }
-
+        return {
+          ...state,
+          cart: {
+            ...state.cart,
+            cartItems: updatedCartItems,
+            itemCount,
+            totalPrice,
+          },
+        };
+      }
+      0.0;
     case types.CART_RESET: {
       Cookies.remove("cartItems");
       Cookies.remove("itemCount");
       Cookies.remove("totalPrice");
+      break;
+    }
+
+    case types.SAVE_SHIPPING_ADDRESS: {
+      Cookies.set(
+        "shippingAddress",
+        JSON.stringify({
+          shippingAddress: {
+            ...state.shippingAddress,
+            ...action.payload,
+          },
+        })
+      );
+
+      break;
     }
   }
   return state;
@@ -160,12 +183,17 @@ const CartProvider = ({ children }) => {
     dispatchCartAction({ type: types.CART_RESET });
   };
 
+  const saveAddressHandler = (address) => {
+    dispatchCartAction({ type: types.SAVE_SHIPPING_ADDRESS, payload: address });
+  };
+
   const value = {
     ...cartState,
     addToCart: addToCartHandler,
     removeFromCart: removeFromCartHandler,
     updateItemQuantity: updateItemQuantity,
     resetCart: resetCartHandler,
+    saveAddress: saveAddressHandler,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

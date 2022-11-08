@@ -10,6 +10,7 @@ import DropdownMenuItem from "../LV2/UI/DropdownMenuItem";
 import { signOut } from "next-auth/react";
 
 const Layout = ({ children, title }) => {
+  //*======== Get session object and status from next-auth ===============
   const { status, data: session } = useSession();
 
   const cartCtx = useContext(Context);
@@ -20,8 +21,10 @@ const Layout = ({ children, title }) => {
     setCartCount(itemCount);
   }, [itemCount]);
 
+  //*=================== Handle Signout =========================
   const signOutHandler = () => {
     cartCtx.resetCart();
+    //*=============== Go to Login Screen after signout ============
     signOut({ callbackUrl: "/login" });
   };
 
@@ -80,7 +83,7 @@ const Layout = ({ children, title }) => {
           </nav>
         </header>
         <main className="container m-auto mt-4 px-4">{children}</main>
-        <footer className="h-10 mt-2 flex justify-center items-center text-neutral-500">
+        <footer className="h-10 mt-2 text-sm flex justify-center items-center text-neutral-500">
           Copyright 2022 Let`s Shop
         </footer>
       </div>

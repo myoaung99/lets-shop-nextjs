@@ -44,7 +44,7 @@ a {
 input,
 select,
 textarea {
-  @apply mt-1 p-1 border rounded ring-slate-300 outline-none focus:ring;
+  @apply mt-1 p-1 border rounded ring-slate-300 outline-none focus:ring bg-slate-100;
 }
 
 .dropdown-item {
