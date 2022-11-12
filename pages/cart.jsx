@@ -7,6 +7,7 @@ import { Context } from "../Store/context";
 
 const CartScreen = () => {
   const cartCtx = useContext(Context);
+  //* ===== Cart Items are stored in client-side cookies =========
   const {
     cart: { cartItems, itemCount, totalPrice },
   } = cartCtx;
@@ -15,14 +16,14 @@ const CartScreen = () => {
     <>
       <h2 className="text-lg">Shopping Cart</h2>
       {cartItems.length <= 0 ? (
-        <div className="mt-2 text-sm  ">
+        <div className="mt-2 text-sm text-black ">
           <span>No item in cart. </span>
           <Link href="/" className="underline">
             Why not get something?
           </Link>
         </div>
       ) : (
-        <div className="grid md:grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-4 gap-4 text-black">
           <div className="md:col-span-3 ">
             <CartTable items={cartItems} />
           </div>

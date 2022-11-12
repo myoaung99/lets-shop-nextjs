@@ -14,7 +14,7 @@ const ShippingWizard = ({ activeStep }) => {
 
   return (
     <>
-      <div className="mb-5 flex flex-wrap">
+      <div className="mb-5 flex flex-wrap text-black">
         {SHIPPING_STEPS.map((step, index) => (
           <div
             key={index}

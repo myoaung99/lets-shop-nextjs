@@ -1,18 +1,41 @@
 import Layout from "../components/Layout";
 import CartProvider from "../Store/cart-provider";
 import "../styles/globals.css";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
       <CartProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        {Component.protected === true ? (
+          <Auth>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Auth>
+        ) : (
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        )}
       </CartProvider>
     </SessionProvider>
   );
+}
+
+function Auth({ children }) {
+  const router = useRouter();
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/unauthorized?message=login required");
+    },
+  });
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+  return children;
 }
 
 export default MyApp;

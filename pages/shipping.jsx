@@ -9,4 +9,6 @@ const ShippingScreen = () => {
   );
 };
 
+//* ===== `protected` props can be access from _app.js Component object ==========
+ShippingScreen.protected = true;
 export default ShippingScreen;

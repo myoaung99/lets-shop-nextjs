@@ -53,7 +53,7 @@ const ProductDetail = () => {
         </h1>
       </div>
 
-      <div className="grid md:grid-cols-4 md:gap-3">
+      <div className="grid md:grid-cols-4 md:gap-3 text-black">
         <div className="md:col-span-2 ">
           <Image
             className="rounded"

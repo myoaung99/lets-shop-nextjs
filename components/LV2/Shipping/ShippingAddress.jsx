@@ -24,13 +24,14 @@ const ShippingAddress = ({ defaultAddress }) => {
     defaultValues: defaultAddress,
   });
 
+  //* ========== SUBMIT SHIPPING ADDRESS =============
   const onSubmit = (data) => {
     cartCtx.saveAddress(data);
   };
 
   return (
     <form
-      className="mt-6 max-w-screen-md mx-auto"
+      className="mt-6 max-w-screen-md mx-auto text-black"
       onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="mb-4 text-xl font-bold">Shipping</h2>

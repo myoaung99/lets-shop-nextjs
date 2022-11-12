@@ -17,6 +17,7 @@ export default function Home({ products }) {
   );
 }
 
+//*========== SSR with necessary data ==============
 export async function getStaticProps() {
   return {
     props: {

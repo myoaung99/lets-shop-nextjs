@@ -47,6 +47,7 @@ const LoginScreen = () => {
         toast.error(result.error);
       }
     } catch (err) {
+      //* react toast notification
       toast.error(getError(err));
     }
   };
@@ -56,7 +57,7 @@ const LoginScreen = () => {
       <Head>
         <title>Login - Let`s Shop</title>
       </Head>
-      <div className="max-w-screen-md mx-auto">
+      <div className="max-w-screen-md mx-auto text-black">
         <h1 className="text-xl font-bold">Login</h1>
         <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col mb-4">
