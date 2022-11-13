@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Context } from "../../../Store/context";
+import { useRouter } from "next/router";
 
 const shippingSchema = yup.object({
   fullname: yup.string().required("Full name is required."),
@@ -12,8 +13,9 @@ const shippingSchema = yup.object({
   country: yup.string().required("Country is required."),
 });
 
-const ShippingAddress = ({ defaultAddress }) => {
+const ShippingAddress = () => {
   const cartCtx = useContext(Context);
+  const router = useRouter();
 
   const {
     register,
@@ -21,12 +23,13 @@ const ShippingAddress = ({ defaultAddress }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(shippingSchema),
-    defaultValues: defaultAddress,
+    defaultValues: cartCtx.shippingAddress.shippingAddress,
   });
 
   //* ========== SUBMIT SHIPPING ADDRESS =============
   const onSubmit = (data) => {
     cartCtx.saveAddress(data);
+    router.push("/payment");
   };
 
   return (
@@ -52,20 +55,13 @@ const ShippingAddress = ({ defaultAddress }) => {
           id="address"
           className="w-full"
           type="text"
-          autoFocus
           {...register("address")}
         />
         <p className="text-red-600 text-sm mt-1">{errors.address?.message}</p>
       </div>
       <div className="flex flex-col mb-4">
         <label htmlFor="city">City</label>
-        <input
-          id="city"
-          className="w-full"
-          type="text"
-          autoFocus
-          {...register("city")}
-        />
+        <input id="city" className="w-full" type="text" {...register("city")} />
         <p className="text-red-600 text-sm mt-1">{errors.city?.message}</p>
       </div>
       <div className="flex flex-col mb-4">
@@ -74,7 +70,6 @@ const ShippingAddress = ({ defaultAddress }) => {
           id="postal"
           className="w-full"
           type="string"
-          autoFocus
           {...register("postal")}
         />
         <p className="text-red-600 text-sm mt-1">{errors.postal?.message}</p>
@@ -85,14 +80,14 @@ const ShippingAddress = ({ defaultAddress }) => {
           id="country"
           className="w-full"
           type="text"
-          autoFocus
           {...register("country")}
         />
         <p className="text-red-600 text-sm mt-1">{errors.country?.message}</p>
       </div>
-
       <div className="flex justify-end">
-        <button className="primary-button">Next</button>
+        <button type="submit" className="primary-button">
+          Next
+        </button>
       </div>
     </form>
   );

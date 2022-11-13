@@ -26,6 +26,7 @@ const saveToCookies = (items, count, total) => {
   );
 };
 
+//? ======== initial default values ============
 const cartDefaultValue = {
   cart: {
     cartItems: Cookies.get("cart")
@@ -41,8 +42,12 @@ const cartDefaultValue = {
   shippingAddress: Cookies.get("shippingAddress")
     ? JSON.parse(Cookies.get("shippingAddress"))
     : {},
+  paymentMethod: Cookies.get("paymentMethod")
+    ? JSON.parse(Cookies.get("paymentMethod"))
+    : {},
 };
 
+//? =========== reducer ================
 const cartReducer = (state, action) => {
   switch (action.type) {
     case types.CART_ADD_ITEM: {
@@ -151,6 +156,11 @@ const cartReducer = (state, action) => {
 
       break;
     }
+    case types.SAVE_PAYMENT_METHOD: {
+      Cookies.set("paymentMethod", JSON.stringify(action.payload));
+
+      break;
+    }
   }
   return state;
 };
@@ -187,6 +197,10 @@ const CartProvider = ({ children }) => {
     dispatchCartAction({ type: types.SAVE_SHIPPING_ADDRESS, payload: address });
   };
 
+  const savePaymentHandler = (payment) => {
+    dispatchCartAction({ type: types.SAVE_PAYMENT_METHOD, payload: payment });
+  };
+
   const value = {
     ...cartState,
     addToCart: addToCartHandler,
@@ -194,6 +208,7 @@ const CartProvider = ({ children }) => {
     updateItemQuantity: updateItemQuantity,
     resetCart: resetCartHandler,
     saveAddress: saveAddressHandler,
+    savePayment: savePaymentHandler,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

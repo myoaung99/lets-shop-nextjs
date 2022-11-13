@@ -60,7 +60,7 @@ const Layout = ({ children, title }) => {
               {status === "loading" ? (
                 "Loading"
               ) : session?.user ? (
-                <Menu as="div" className="relative inline">
+                <Menu as="div" className="relative inline text-black">
                   <Menu.Button className="text-amber-500 hover:text-amber-600 py-1">
                     {session.user.name}
                   </Menu.Button>

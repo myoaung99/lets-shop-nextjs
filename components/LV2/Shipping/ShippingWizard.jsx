@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../../Store/context";
+import React from "react";
 import ShippingAddress from "./ShippingAddress";
 
 const SHIPPING_STEPS = [
@@ -10,8 +9,6 @@ const SHIPPING_STEPS = [
 ];
 
 const ShippingWizard = ({ activeStep }) => {
-  const cartCtx = useContext(Context);
-
   return (
     <>
       <div className="mb-5 flex flex-wrap text-black">
@@ -28,9 +25,7 @@ const ShippingWizard = ({ activeStep }) => {
           </div>
         ))}
       </div>
-      <ShippingAddress
-        defaultAddress={cartCtx.shippingAddress.shippingAddress}
-      />
+      <ShippingAddress />
     </>
   );
 };

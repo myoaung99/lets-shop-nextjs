@@ -7,8 +7,6 @@ const Unauthorized = () => {
   const router = useRouter();
   const { message } = router.query;
 
-  console.log("From unauthorized page.", message);
-
   return (
     <>
       <Head>
