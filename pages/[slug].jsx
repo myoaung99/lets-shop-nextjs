@@ -1,51 +1,52 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import data from "../utils/data";
 import Image from "next/image";
 import { Context } from "../Store/context";
+import Product from "../model/Product";
+import db from "../utils/db";
+import axios from "axios";
 
-const ProductDetail = () => {
+const ProductDetail = ({ product }) => {
   const router = useRouter();
-  const { slug } = router.query;
 
   const cartCtx = useContext(Context);
-  const itemCount = cartCtx.cart.itemCount;
-
-  const product = data.products.find((p) => p.slug === slug);
-
   const [inStock, setInStock] = useState(0);
 
   useEffect(() => {
-    if (product) {
-      const item = cartCtx.cart.cartItems.find(
+    const getCount = async () => {
+      const { data } = await axios.get(`/api/products/${product._id}`);
+
+      const countInCart = cartCtx.cart.cartItems.find(
         (item) => item.slug === product.slug
       );
-      if (item) {
-        setInStock(product.countInStock - item.quantity || 0);
-      } else {
-        setInStock(product.countInStock);
+      if (!countInCart) {
+        return setInStock(data.countInStock);
       }
+      setInStock(data.countInStock - countInCart.quantity);
+    };
+    if (product) {
+      getCount();
     }
-  }, [product, itemCount, cartCtx.cart]);
+  }, [product, cartCtx.cart.cartItems]);
 
   const backHandler = () => {
     router.back();
   };
 
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
     cartCtx.addToCart(product, 1);
     setInStock((prev) => prev - 1);
   };
 
   if (!product) {
-    return <h1>Product not found.</h1>;
+    return <h1 className="text-black">Product not found.</h1>;
   }
 
   return (
     <>
       <Head>
-        <title>{product.name} - Let`s Shop</title>
+        <title>{`${product.name} - Let's Shop`}</title>
       </Head>
       <div onClick={backHandler} className="mb-2">
         <h1 className="text-black underline cursor-pointer hover:text-yellow-500">
@@ -105,3 +106,15 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+export async function getServerSideProps(context) {
+  await db.connect();
+  const product = await Product.find({ slug: context.query.slug }).lean();
+  await db.disconnect();
+
+  return {
+    props: {
+      product: product[0] ? db.convertDocToObj(product[0]) : null,
+    },
+  };
+}

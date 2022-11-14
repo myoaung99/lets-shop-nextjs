@@ -1,6 +1,7 @@
 import Head from "next/head";
 import ProductItem from "../components/LV2/Product/ProductItem";
-import data from "../utils/data";
+import Product from "../model/Product";
+import db from "../utils/db";
 
 export default function Home({ products }) {
   return (
@@ -18,11 +19,14 @@ export default function Home({ products }) {
 }
 
 //*========== SSR with necessary data ==============
-export async function getStaticProps() {
+export async function getServerSideProps() {
+  await db.connect();
+  const products = await Product.find().lean();
+  await db.disconnect();
+
   return {
     props: {
-      products: data.products,
+      products: products.map(db.convertDocToObj),
     },
-    revalidate: 1,
   };
 }
