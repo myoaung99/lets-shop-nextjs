@@ -22,6 +22,8 @@ const PaymentScreen = ({ activeStep = 2 }) => {
     e.preventDefault();
     //?===== save selected payment method to cookie ======
     cartCtx.savePayment(selectedPaymentMethod);
+    console.log(selectedPaymentMethod);
+    router.push("/order");
   }
 
   useEffect(() => {
@@ -70,7 +72,10 @@ const PaymentScreen = ({ activeStep = 2 }) => {
             </div>
           ))}
           <div className="flex justify-between items-center mt-5">
-            <button className="default-button" onClick={() => router.back()}>
+            <button
+              className="default-button"
+              onClick={() => router.push("/shipping")}
+            >
               Back
             </button>
             <button

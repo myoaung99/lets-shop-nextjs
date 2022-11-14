@@ -2,7 +2,6 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { Context } from "../../../Store/context";
 
 const ProductItem = ({ product }) => {

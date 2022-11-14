@@ -44,7 +44,7 @@ const cartDefaultValue = {
     : {},
   paymentMethod: Cookies.get("paymentMethod")
     ? JSON.parse(Cookies.get("paymentMethod"))
-    : {},
+    : "",
 };
 
 //? =========== reducer ================
@@ -158,7 +158,6 @@ const cartReducer = (state, action) => {
     }
     case types.SAVE_PAYMENT_METHOD: {
       Cookies.set("paymentMethod", JSON.stringify(action.payload));
-
       break;
     }
   }
