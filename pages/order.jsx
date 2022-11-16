@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import dynamic from "next/dynamic";
+import React from "react";
 import OrderCheckout from "../components/LV2/Order/OrderCheckout";
 import OrderInfo from "../components/LV2/Order/OrderInfo";
-import { Context } from "../Store/context";
 
 const SHIPPING_STEPS = [
   "User Login",
@@ -11,12 +11,6 @@ const SHIPPING_STEPS = [
 ];
 
 const PlaceOrderScreen = ({ activeStep = 3 }) => {
-  const cartCtx = useContext(Context);
-
-  const {
-    cart: { cartItems, itemCount, totalPrice, shippingAddress },
-  } = cartCtx;
-
   return (
     <>
       <div className="mb-5 flex flex-wrap text-black">
@@ -38,13 +32,13 @@ const PlaceOrderScreen = ({ activeStep = 3 }) => {
 
       <div className="grid md:grid-cols-4 gap-4 text-black">
         <div className="md:col-span-3 ">
-          <OrderInfo cartCtx={cartCtx} />
+          <OrderInfo />
         </div>
 
-        <OrderCheckout cartCtx={cartCtx} />
+        <OrderCheckout />
       </div>
     </>
   );
 };
 
-export default PlaceOrderScreen;
+export default dynamic(() => Promise.resolve(PlaceOrderScreen), { ssr: false });

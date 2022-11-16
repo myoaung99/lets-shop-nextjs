@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -21,10 +21,21 @@ const ShippingAddress = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(shippingSchema),
-    defaultValues: cartCtx.shippingAddress.shippingAddress,
+    // defaultValues: cartCtx.shippingAddress.shippingAddress,
   });
+
+  useEffect(() => {
+    if (cartCtx.shippingAddress) {
+      setValue("fullname", cartCtx.shippingAddress.fullname);
+      setValue("address", cartCtx.shippingAddress.address);
+      setValue("postal", cartCtx.shippingAddress.postal);
+      setValue("country", cartCtx.shippingAddress.country);
+      setValue("city", cartCtx.shippingAddress.city);
+    }
+  }, [cartCtx.shippingAddress, setValue]);
 
   //* ========== SUBMIT SHIPPING ADDRESS =============
   const onSubmit = (data) => {

@@ -41,10 +41,10 @@ const cartDefaultValue = {
   },
   shippingAddress: Cookies.get("shippingAddress")
     ? JSON.parse(Cookies.get("shippingAddress"))
-    : {},
+    : undefined,
   paymentMethod: Cookies.get("paymentMethod")
     ? JSON.parse(Cookies.get("paymentMethod"))
-    : "",
+    : undefined,
 };
 
 //? =========== reducer ================
@@ -107,58 +107,60 @@ const cartReducer = (state, action) => {
         },
       };
     }
-    case types.CART_UPDATE_QUANTITY:
-      {
-        const { item: updateItem, quantity: newQuantity } = action.payload;
-        const existItem = state.cart.cartItems.find(
-          (item) => item.slug === updateItem.slug
-        );
-        const existItemIndex = state.cart.cartItems.findIndex(
-          (item) => item.slug === existItem.slug
-        );
-        existItem.quantity = newQuantity;
-        const updatedCartItems = [...state.cart.cartItems];
-
-        updatedCartItems[existItemIndex] = existItem;
-
-        const itemCount = getTotalItem(updatedCartItems);
-        const totalPrice = getTotalPrice(updatedCartItems);
-        saveToCookies(updatedCartItems, itemCount, totalPrice);
-
-        return {
-          ...state,
-          cart: {
-            ...state.cart,
-            cartItems: updatedCartItems,
-            itemCount,
-            totalPrice,
-          },
-        };
-      }
-      0.0;
-    case types.CART_RESET: {
-      Cookies.remove("cartItems");
-      Cookies.remove("itemCount");
-      Cookies.remove("totalPrice");
-      break;
-    }
-
-    case types.SAVE_SHIPPING_ADDRESS: {
-      Cookies.set(
-        "shippingAddress",
-        JSON.stringify({
-          shippingAddress: {
-            ...state.shippingAddress,
-            ...action.payload,
-          },
-        })
+    case types.CART_UPDATE_QUANTITY: {
+      const { item: updateItem, quantity: newQuantity } = action.payload;
+      const existItem = state.cart.cartItems.find(
+        (item) => item.slug === updateItem.slug
       );
+      const existItemIndex = state.cart.cartItems.findIndex(
+        (item) => item.slug === existItem.slug
+      );
+      existItem.quantity = newQuantity;
+      const updatedCartItems = [...state.cart.cartItems];
 
-      break;
+      updatedCartItems[existItemIndex] = existItem;
+
+      const itemCount = getTotalItem(updatedCartItems);
+      const totalPrice = getTotalPrice(updatedCartItems);
+      saveToCookies(updatedCartItems, itemCount, totalPrice);
+
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          cartItems: updatedCartItems,
+          itemCount,
+          totalPrice,
+        },
+      };
+    }
+    case types.CART_RESET: {
+      Cookies.remove("cart");
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          cartItems: [],
+          itemCount: 0,
+          totalPrice: 0,
+        },
+      };
+    }
+    case types.SAVE_SHIPPING_ADDRESS: {
+      console.log(action.payload);
+      Cookies.set("shippingAddress", JSON.stringify(action.payload));
+
+      return {
+        ...state,
+        shippingAddress: action.payload,
+      };
     }
     case types.SAVE_PAYMENT_METHOD: {
       Cookies.set("paymentMethod", JSON.stringify(action.payload));
-      break;
+      return {
+        ...state,
+        paymentMethod: action.payload,
+      };
     }
   }
   return state;

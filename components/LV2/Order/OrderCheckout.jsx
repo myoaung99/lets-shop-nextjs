@@ -1,7 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../../Store/context";
 
-const OrderCheckout = ({ cartCtx }) => {
+const OrderCheckout = () => {
+  const cartCtx = useContext(Context);
   const { itemCount, totalPrice } = cartCtx;
 
   return (

@@ -22,7 +22,6 @@ const PaymentScreen = ({ activeStep = 2 }) => {
     e.preventDefault();
     //?===== save selected payment method to cookie ======
     cartCtx.savePayment(selectedPaymentMethod);
-    console.log(selectedPaymentMethod);
     router.push("/order");
   }
 
