@@ -1,3 +1,6 @@
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import { Context } from "../../../Store/context";
 import OrderCheckout from "./OrderCheckout";
 import OrderInfo from "./OrderInfo";
 
@@ -9,6 +12,18 @@ const SHIPPING_STEPS = [
 ];
 
 const OrderWizard = ({ activeStep = 3 }) => {
+  const cartCtx = useContext(Context);
+  const router = useRouter();
+  const {
+    cart: { cartItems },
+  } = cartCtx;
+
+  useEffect(() => {
+    if (!cartItems || cartItems.length <= 0) {
+      router.push("/");
+    }
+  }, [cartItems, router]);
+
   return (
     <>
       <div className="mb-5 flex flex-wrap text-black">

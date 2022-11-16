@@ -1,4 +1,6 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect } from "react";
+import { Context } from "../../../Store/context";
 import ShippingAddress from "./ShippingAddress";
 
 const SHIPPING_STEPS = [
@@ -9,6 +11,18 @@ const SHIPPING_STEPS = [
 ];
 
 const ShippingWizard = ({ activeStep }) => {
+  const cartCtx = useContext(Context);
+  const router = useRouter();
+  const {
+    cart: { cartItems },
+  } = cartCtx;
+
+  useEffect(() => {
+    if (!cartItems || cartItems.length <= 0) {
+      router.push("/");
+    }
+  }, [cartItems, router]);
+
   return (
     <>
       <div className="mb-5 flex flex-wrap text-black">

@@ -1,5 +1,4 @@
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -53,7 +52,7 @@ const OrderCheckout = () => {
       });
       setLoading(false);
       cartCtx.resetCart();
-      router.push(`/order/${data.id}`);
+      router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
       toast.error(getError(err), {
@@ -91,8 +90,12 @@ const OrderCheckout = () => {
           </div>
         </li>
         <li>
-          <button onClick={placeOrderHandler} className="primary-button w-full">
-            Place Order
+          <button
+            disabled={loading}
+            onClick={placeOrderHandler}
+            className="primary-button w-full"
+          >
+            {loading ? "Loading..." : "Place Order"}
           </button>
         </li>
       </ul>

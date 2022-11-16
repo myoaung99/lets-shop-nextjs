@@ -1,8 +1,9 @@
 import dynamic from "next/dynamic";
-import React from "react";
+import React, from "react";
 import OrderWizard from "../components/LV2/Order/OrderWizard";
 
 const PlaceOrderScreen = () => {
+ 
   return <OrderWizard activeStep={3} />;
 };
 

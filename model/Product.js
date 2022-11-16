@@ -16,7 +16,7 @@ const productSchema = new Schema(
   { timestamps: true }
 );
 
-//?=============== Check if the model User is already created or not ===============
+//?=============== Check if the model product is already created or not ===============
 const Product =
   mongoose.models.product || mongoose.model("product", productSchema);
 export default Product;
