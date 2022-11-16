@@ -8,6 +8,7 @@ const initialState = {
   },
   shippingAddress: {},
   paymentMethod: "",
+  resetCart: () => {},
   addToCart: (item) => {},
   removeFromCart: (slug) => {},
   updateItemQuantity: (item, quantity) => {},

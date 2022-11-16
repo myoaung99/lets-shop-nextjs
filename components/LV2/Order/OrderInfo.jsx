@@ -65,7 +65,7 @@ const OrderInfo = () => {
                 </td>
                 <td className="p-3 text-center">${item.price}</td>
                 <td className="p-3 text-center">
-                  <p>{item.quantity * item.price}</p>
+                  <p>${item.quantity * item.price}</p>
                 </td>
               </tr>
             ))}

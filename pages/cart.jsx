@@ -5,12 +5,21 @@ import CartCheckout from "../components/LV2/Cart/CartCheckout";
 import CartTable from "../components/LV2/Cart/CartTable";
 import { Context } from "../Store/context";
 
+const getTotalPrice = (items) => {
+  return items.reduce(
+    (total, item) => (total = total + item.quantity * item.price),
+    0
+  );
+};
+
 const CartScreen = () => {
   const cartCtx = useContext(Context);
   //* ===== Cart Items are stored in client-side cookies =========
   const {
-    cart: { cartItems, itemCount, totalPrice },
+    cart: { cartItems, itemCount },
   } = cartCtx;
+
+  const totalPrice = getTotalPrice(cartItems);
 
   return (
     <>

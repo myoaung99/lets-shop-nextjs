@@ -14,7 +14,7 @@ const CartCheckout = ({ itemCount, totalPrice }) => {
         <li>
           <div className="flex justify-between pb-3">
             <p>Total price :</p>
-            <p>{totalPrice}</p>
+            <p>${totalPrice}</p>
           </div>
         </li>
         <li>
