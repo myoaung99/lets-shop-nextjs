@@ -2,7 +2,6 @@ import React from "react";
 import OrderTrackingWizard from "../../components/LV2/OrderTracking";
 import Order from "../../model/Order";
 import db from "../../utils/db";
-import { getSession } from "next-auth/react";
 
 const OrderTrackingScreen = (props) => {
   if (props.error) {
