@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import Link from "next/link";
+import { useContext } from "react";
 import { Context } from "../../../Store/context";
 import OrderCheckout from "./OrderCheckout";
 import OrderInfo from "./OrderInfo";
@@ -13,16 +13,20 @@ const SHIPPING_STEPS = [
 
 const OrderWizard = ({ activeStep = 3 }) => {
   const cartCtx = useContext(Context);
-  const router = useRouter();
   const {
     cart: { cartItems },
   } = cartCtx;
 
-  useEffect(() => {
-    if (!cartItems || cartItems.length <= 0) {
-      router.push("/");
-    }
-  }, [cartItems, router]);
+  if (cartItems.length === 0) {
+    return (
+      <div className="mt-2 text-sm text-black ">
+        <span>No item in cart to order. </span>
+        <Link href="/" className="underline">
+          Why not get something?
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>

@@ -28,9 +28,6 @@ const ProductItem = ({ product }) => {
   const addToCartHandler = async () => {
     if (inStock > 0) {
       cartCtx.addToCart(product, 1);
-      // toast("Product added", {
-      //   type: "success",
-      // });
     }
   };
 

@@ -18,7 +18,7 @@ export default function Home({ products }) {
   );
 }
 
-//*========== SSR with necessary data ==============
+//? ========== SSR with necessary data ==============
 export async function getServerSideProps() {
   await db.connect();
   const products = await Product.find().lean();

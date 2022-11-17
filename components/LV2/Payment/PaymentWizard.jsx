@@ -16,11 +16,7 @@ const PaymentWizard = ({ activeStep = 2 }) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState();
 
   const cartCtx = useContext(Context);
-  const {
-    shippingAddress,
-    paymentMethod,
-    cart: { cartItems },
-  } = cartCtx;
+  const { shippingAddress, paymentMethod } = cartCtx;
 
   function submitHandler(e) {
     e.preventDefault();
@@ -28,12 +24,6 @@ const PaymentWizard = ({ activeStep = 2 }) => {
     cartCtx.savePayment(selectedPaymentMethod);
     router.push("/order");
   }
-
-  useEffect(() => {
-    if (!cartItems || cartItems.length <= 0) {
-      router.push("/");
-    }
-  }, [cartItems, router]);
 
   useEffect(() => {
     //?===== shipping address မဖြည့်ထားရင် /shipping ကို ပြန်သွားပါ =======

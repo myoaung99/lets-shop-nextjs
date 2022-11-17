@@ -107,6 +107,7 @@ const ProductDetail = ({ product }) => {
 
 export default ProductDetail;
 
+//? ===== GET PRODUCT DETAIL FROM SERVER ======
 export async function getServerSideProps(context) {
   await db.connect();
   const product = await Product.find({ slug: context.query.slug }).lean();

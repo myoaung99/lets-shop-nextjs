@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import { SessionProvider, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
+//? ==== Component is currently rendering page on the client side
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   );
 }
 
+//? ========== PROTECTING THE PAGES WITH H.O.F COMPONENT =========
 function Auth({ children }) {
   const router = useRouter();
   const { status } = useSession({

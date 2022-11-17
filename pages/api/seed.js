@@ -15,11 +15,10 @@ const dummy_users = [
     name: "Jane",
     email: "user@example.com",
     password: bcrypt.hashSync("123456", 12),
-    isAdmin: false,
   },
 ];
 
-//*============== Function That Seed a.k.a Add Dummy Data To DB ====================
+//? ============== Handler That Seed a.k.a Add Dummy Data To DB ====================
 async function handler(req, res) {
   await db.connect();
   await User.deleteMany();

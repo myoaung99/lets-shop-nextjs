@@ -3,12 +3,15 @@ import User from "./User";
 
 const orderSchema = new Schema(
   {
-    orderItems: {
-      name: { type: String, required: true },
-      image: { type: String, required: true },
-      price: { type: Number, required: true },
-      quantity: { type: Number, required: true },
-    },
+    user: { type: ObjectId, ref: User, required: true },
+    orderItems: [
+      {
+        name: { type: String, required: true },
+        image: { type: String, required: true },
+        price: { type: Number, required: true },
+        quantity: { type: Number, required: true },
+      },
+    ],
     shippingAddress: {
       fullname: { type: String, required: true },
       address: { type: String, required: true },
@@ -21,7 +24,6 @@ const orderSchema = new Schema(
     taxPrice: { type: Number, required: true },
     shippingPrice: { type: Number, required: true },
     totalCost: { type: Number, required: true },
-    user: { type: ObjectId, ref: User, required: true },
 
     isPaid: { type: Boolean, required: true, default: false },
     isDelivered: { type: Boolean, required: true, default: false },
@@ -33,5 +35,6 @@ const orderSchema = new Schema(
   }
 );
 
+//? ========= create order model after checking if the order model is already created or not
 const Order = mongoose.models.order || mongoose.model("order", orderSchema);
 export default Order;
