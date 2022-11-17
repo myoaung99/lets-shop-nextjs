@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { useContext } from "react";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
 import { Context } from "../../../Store/context";
 import OrderCheckout from "./OrderCheckout";
 import OrderInfo from "./OrderInfo";
@@ -13,9 +14,18 @@ const SHIPPING_STEPS = [
 
 const OrderWizard = ({ activeStep = 3 }) => {
   const cartCtx = useContext(Context);
+  const router = useRouter();
+
   const {
     cart: { cartItems },
+    paymentMethod,
   } = cartCtx;
+
+  useEffect(() => {
+    if (!paymentMethod) {
+      router.push("/payment");
+    }
+  }, [paymentMethod, router]);
 
   if (cartItems.length === 0) {
     return (
@@ -45,7 +55,7 @@ const OrderWizard = ({ activeStep = 3 }) => {
         ))}
       </div>
 
-      <h1 className="text-lg font-semibold mb-4">Place Order</h1>
+      <h1 className="text-lg font-semibold mb-4 text-black">Place Order</h1>
 
       <div className="grid md:grid-cols-4 gap-4 text-black">
         <div className="md:col-span-3 ">

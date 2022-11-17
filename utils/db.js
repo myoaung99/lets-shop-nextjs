@@ -39,6 +39,16 @@ function convertDocToObj(doc) {
   doc._id = doc._id.toString();
   doc.createdAt = doc.createdAt.toString();
   doc.updatedAt = doc.updatedAt.toString();
+
+  if (doc.user) {
+    doc.user = doc.user.toString();
+  }
+  if (doc.orderItems) {
+    doc.orderItems = doc.orderItems.map((item) => {
+      item._id = item._id.toString();
+      return item;
+    });
+  }
   return doc;
 }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../../../Store/context";
 import { getError } from "../../../utils/handleError";
@@ -26,12 +26,6 @@ const OrderCheckout = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!paymentMethod) {
-      router.push("/payment");
-    }
-  }, [paymentMethod, router]);
 
   const totalPrice = getTotalPrice(cartItems);
   const taxPrice = roundToTwo(totalPrice * 0.15);
