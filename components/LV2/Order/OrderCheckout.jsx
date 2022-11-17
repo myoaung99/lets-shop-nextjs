@@ -45,8 +45,8 @@ const OrderCheckout = () => {
         totalCost,
       });
       setLoading(false);
-      cartCtx.resetCart();
       router.push(`/order/${data._id}`);
+      cartCtx.resetCart();
     } catch (err) {
       setLoading(false);
       toast.error(getError(err), {

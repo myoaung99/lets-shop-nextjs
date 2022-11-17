@@ -4,7 +4,9 @@ import OrderTransaction from "./OrderTransaction";
 const OrderTrackingWizard = ({ orderDetail }) => {
   return (
     <>
-      <h1 className="text-lg font-semibold mb-4 text-black">Order Tracking</h1>
+      <h1 className="text-lg font-semibold mb-4 text-black">
+        Order No. {orderDetail._id}
+      </h1>
 
       <div className="grid md:grid-cols-4 gap-4 text-black">
         <div className="md:col-span-3 ">
