@@ -19,7 +19,7 @@ export default function Home({ products }) {
 }
 
 //? ========== SSR with necessary data ==============
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await db.connect();
   const products = await Product.find().lean();
   await db.disconnect();
@@ -28,5 +28,6 @@ export async function getServerSideProps() {
     props: {
       products: products.map(db.convertDocToObj),
     },
+    revalidate: 1,
   };
 }
