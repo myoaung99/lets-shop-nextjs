@@ -16,16 +16,18 @@ const handler = async (req, res) => {
   const { user } = session;
   await db.connect();
 
-  //? ========= create new mongoose order object =========
-  const newOrder = new Order({
-    ...req.body,
-    user: user._id,
-  });
+  if (req.method === "POST") {
+    //? ========= create new mongoose order object =========
+    const newOrder = new Order({
+      ...req.body,
+      user: user._id,
+    });
 
-  //? ======= save the new oreder object and reture saved obj after disconnecting the db
-  const order = await newOrder.save();
-  await db.disconnect();
-  res.status(201).send(order);
+    //? ======= save the new oreder object and reture saved obj after disconnecting the db
+    const order = await newOrder.save();
+    await db.disconnect();
+    return res.status(201).send(order);
+  }
 };
 
 export default handler;

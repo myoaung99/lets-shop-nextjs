@@ -66,7 +66,7 @@ const Layout = ({ children, title }) => {
                   </Menu.Button>
                   <Menu.Items className="absolute border w-32 rounded right-0 h-fit bg-white shadow-lg">
                     <DropdownMenuItem href="/profile">Profile</DropdownMenuItem>
-                    <DropdownMenuItem href="/order-history">
+                    <DropdownMenuItem href="/orders">
                       Order History
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={signOutHandler} href="/logout">

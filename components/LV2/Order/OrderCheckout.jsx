@@ -45,7 +45,7 @@ const OrderCheckout = () => {
         totalCost,
       });
       setLoading(false);
-      router.push(`/order/${data._id}`);
+      router.push(`/orders/${data._id}`);
       cartCtx.resetCart();
     } catch (err) {
       setLoading(false);

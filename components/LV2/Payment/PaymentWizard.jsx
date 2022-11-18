@@ -28,7 +28,7 @@ const PaymentWizard = ({ activeStep = 2 }) => {
   useEffect(() => {
     //?===== shipping address မဖြည့်ထားရင် /shipping ကို ပြန်သွားပါ =======
     if (!shippingAddress) {
-      return router.push("/shipping");
+      router.push("/shipping");
     }
     //?===== cookie ထဲက payment method or empty value ကို initial value အဖြစ်ထားပါ ======
     setSelectedPaymentMethod(paymentMethod || " ");
