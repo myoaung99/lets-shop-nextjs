@@ -37,6 +37,10 @@ a {
   @apply border px-3 py-1 rounded cursor-pointer text-white bg-slate-500 hover:bg-slate-700 active:bg-slate-900 transition text-sm;
 }
 
+.primary-sm-button {
+  @apply border px-2 py-0.5 rounded cursor-pointer text-white bg-slate-500 hover:bg-slate-700 active:bg-slate-900 transition text-xs;
+}
+
 .default-button {
   @apply border border-slate-500 px-3 py-1 rounded cursor-pointer text-slate-500 bg-white hover:bg-slate-200 active:bg-slate-400 transition text-sm;
 }
