@@ -9,11 +9,13 @@ const dummy_users = [
     name: "John",
     email: "admin@example.com",
     password: bcrypt.hashSync("123456", 12),
+    image: "",
     isAdmin: true,
   },
   {
     name: "Jane",
     email: "user@example.com",
+    image: "",
     password: bcrypt.hashSync("123456", 12),
   },
 ];

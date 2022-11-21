@@ -34,9 +34,11 @@ function Auth({ children }) {
       router.push("/unauthorized?message=login required");
     },
   });
+
   if (status === "loading") {
     return <p>Loading...</p>;
   }
+
   return children;
 }
 

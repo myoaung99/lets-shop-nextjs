@@ -1,30 +1,60 @@
-import { unstable_getServerSession } from "next-auth";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import db from "../utils/db";
-import { authOptions } from "./api/auth/[...nextauth]";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
-const ProfileScreen = ({ userInfo }) => {
-  const [profileImg, setProfileImg] = useState(userInfo.image);
+const profileSchema = yup.object({
+  name: yup.string().required("Name is required."),
+  email: yup.string().email().required("Email is required."),
+});
+
+const ProfileScreen = () => {
+  const [userInfo, setUserInfo] = useState();
+  const [profileImg, setProfileImg] = useState(undefined);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm({
-    // resolver: yupResolver(registerSchema),
-    defaultValues: {
-      name: userInfo.name,
-      email: userInfo.email,
-    },
+    resolver: yupResolver(profileSchema),
   });
+
+  useEffect(() => {
+    async function getUser() {
+      await axios
+        .get("/api/user")
+        .then((res) => {
+          if (res.status !== 200) {
+            throw new Error("No user was found");
+          }
+          console.log(res.data.user);
+          setUserInfo(res.data.user);
+        })
+        .catch((err) => console.log(err));
+    }
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      setValue("name", userInfo.name);
+      setValue("email", userInfo.email);
+      setProfileImg((userInfo.image && userInfo.image) || undefined);
+    }
+  }, [userInfo, setValue]);
+
+  const watchName = watch("name");
+  const watchEmail = watch("email");
 
   const showCompanyLogoPreview = (event) => {
     if (event.target.files.length > 0) {
-      // const src = URL.createObjectURL(event.target.files[0]);
-      // setCompanyLogo(src);
-
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -35,7 +65,14 @@ const ProfileScreen = ({ userInfo }) => {
   };
 
   const onSubmit = (data) => {
-    console.log({ ...data, profileImg: profileImg });
+    if (
+      watchName !== userInfo?.name ||
+      watchEmail !== userInfo?.email ||
+      profileImg
+    ) {
+      console.log({ ...data, profileImg: profileImg });
+      axios.put("/api/user", { ...userInfo, ...data });
+    }
   };
 
   return (
@@ -46,7 +83,7 @@ const ProfileScreen = ({ userInfo }) => {
         <form className="space-y-4 mt-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center gap-4">
             <div className="img-container flex justify-center items-center w-[100px] h-[100px] bg-slate-100 rounded-full overflow-hidden ">
-              {profileImg === "f" ? (
+              {!profileImg ? (
                 <p className="text-xs text-slate-400">No Image</p>
               ) : (
                 <Image
@@ -88,13 +125,16 @@ const ProfileScreen = ({ userInfo }) => {
               id="email"
               className="w-full  text-sm pl-2"
               type="email"
-              autoFocus
               {...register("email")}
             />
             <p className="text-red-600 text-sm mt-1">{errors.email?.message}</p>
           </div>
           <div className="flex w-full">
-            <button className="primary-button ml-auto">Update</button>
+            {watchName !== userInfo?.name ||
+            watchEmail !== userInfo?.email ||
+            profileImg ? (
+              <button className="primary-button ml-auto">Update</button>
+            ) : null}
           </div>
         </form>
       </div>
@@ -104,19 +144,3 @@ const ProfileScreen = ({ userInfo }) => {
 
 ProfileScreen.protected = true;
 export default ProfileScreen;
-
-export const getServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  const { user } = session;
-
-  return {
-    props: {
-      userInfo: db.convertDocToObj(user),
-    },
-  };
-};
