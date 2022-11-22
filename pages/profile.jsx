@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import db from "../utils/db";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSession } from "next-auth/react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 const profileSchema = yup.object({
   name: yup.string().required("Name is required."),
@@ -15,6 +15,10 @@ const profileSchema = yup.object({
 const ProfileScreen = () => {
   const [userInfo, setUserInfo] = useState();
   const [profileImg, setProfileImg] = useState(undefined);
+
+  const { data: session } = useSession();
+
+  console.log(session);
 
   const {
     register,
@@ -64,14 +68,19 @@ const ProfileScreen = () => {
     }
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (
       watchName !== userInfo?.name ||
       watchEmail !== userInfo?.email ||
       profileImg
     ) {
       console.log({ ...data, profileImg: profileImg });
-      axios.put("/api/user", { ...userInfo, ...data });
+      const res = await axios.put("/api/user", { ...userInfo, ...data });
+      if (res.status === 200) {
+        toast.success("Successfully updated");
+      } else {
+        toast.error("Failed to update!");
+      }
     }
   };
 
