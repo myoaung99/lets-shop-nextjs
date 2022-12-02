@@ -5,30 +5,25 @@ import Image from "next/image";
 import { Context } from "../Store/context";
 import Product from "../model/Product";
 import db from "../utils/db";
-import axios from "axios";
 
 const ProductDetail = ({ product }) => {
-  const router = useRouter();
-
-  const cartCtx = useContext(Context);
   const [inStock, setInStock] = useState(0);
+  const router = useRouter();
+  const cartCtx = useContext(Context);
 
+  const cartItems = cartCtx.cart.cartItems;
+
+  //? check if there is instock items
   useEffect(() => {
-    const getCount = async () => {
-      const { data } = await axios.get(`/api/products/${product._id}`);
-
-      const countInCart = cartCtx.cart.cartItems.find(
-        (item) => item.slug === product.slug
-      );
-      if (!countInCart) {
-        return setInStock(data.countInStock);
-      }
-      setInStock(data.countInStock - countInCart.quantity);
-    };
     if (product) {
-      getCount();
+      const countInCart = cartItems.find((item) => item.slug === product.slug);
+
+      if (!countInCart) {
+        return setInStock(product.countInStock);
+      }
+      setInStock(product.countInStock - countInCart.quantity);
     }
-  }, [product, cartCtx.cart.cartItems]);
+  }, [product, cartItems]);
 
   const backHandler = () => {
     router.back();
@@ -48,6 +43,7 @@ const ProductDetail = ({ product }) => {
       <Head>
         <title>{`${product.name} - Let's Shop`}</title>
       </Head>
+
       <div onClick={backHandler} className="mb-2">
         <h1 className="text-black underline cursor-pointer hover:text-yellow-500">
           back to products

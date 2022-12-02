@@ -6,24 +6,19 @@ import { Context } from "../../../Store/context";
 
 const ProductItem = ({ product }) => {
   const cartCtx = useContext(Context);
+  const cartItems = cartCtx.cart.cartItems;
   const [inStock, setInStock] = useState(0);
 
   useEffect(() => {
-    const getCount = async () => {
-      const { data } = await axios.get(`/api/products/${product._id}`);
-
-      const countInCart = cartCtx.cart.cartItems.find(
-        (item) => item.slug === product.slug
-      );
-      if (!countInCart) {
-        return setInStock(data.countInStock);
-      }
-      setInStock(data.countInStock - countInCart.quantity);
-    };
     if (product) {
-      getCount();
+      const countInCart = cartItems.find((item) => item.slug === product.slug);
+
+      if (!countInCart) {
+        return setInStock(product.countInStock);
+      }
+      setInStock(product.countInStock - countInCart.quantity);
     }
-  }, [product, cartCtx.cart.cartItems]);
+  }, [product, cartItems]);
 
   const addToCartHandler = async () => {
     if (inStock > 0) {

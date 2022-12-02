@@ -31,7 +31,6 @@ const Layout = ({ children, title }) => {
   return (
     <main className="bg-white">
       <Head>
-        <title>{title ? title : "Let's Shop"}</title>
         <meta
           name="description"
           content="World's best e-commerce platform where you can get everything"
