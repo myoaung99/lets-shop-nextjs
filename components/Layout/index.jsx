@@ -9,7 +9,7 @@ import { Menu } from "@headlessui/react";
 import DropdownMenuItem from "../LV2/UI/DropdownMenuItem";
 import { signOut } from "next-auth/react";
 
-const Layout = ({ children, title }) => {
+const Layout = ({ children }) => {
   //*======== Get session object and status from next-auth ===============
   const { status, data: session } = useSession();
 
