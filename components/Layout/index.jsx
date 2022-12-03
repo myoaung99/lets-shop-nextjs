@@ -42,7 +42,7 @@ const Layout = ({ children }) => {
 
       <div className="flex flex-col min-h-screen justify-between">
         <header>
-          <nav className="h-12 shadow flex justify-between items-center px-5">
+          <nav className="h-14 shadow flex justify-between items-center px-5">
             <Link
               href="/"
               className="text-xl text-black font-bold hover:text-yellow-500"

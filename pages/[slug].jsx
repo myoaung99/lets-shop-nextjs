@@ -44,14 +44,14 @@ const ProductDetail = ({ product }) => {
         <title>{`${product.name} - Let's Shop`}</title>
       </Head>
 
-      <div onClick={backHandler} className="mb-2">
+      <div onClick={backHandler} className="mb-4">
         <h1 className="text-black underline cursor-pointer hover:text-yellow-500">
           back to products
         </h1>
       </div>
 
       <div className="grid md:grid-cols-4 md:gap-3 text-black">
-        <div className="md:col-span-2 ">
+        <div className="md:col-span-2">
           <Image
             className="rounded"
             src={product.image}
