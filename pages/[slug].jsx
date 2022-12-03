@@ -61,7 +61,7 @@ const ProductDetail = ({ product }) => {
           />
         </div>
 
-        <div>
+        <div className="card h-[250px] p-3 space-y-3">
           <h2>{product.name}</h2>
           <p>Category: {product.category}</p>
           <p>Brand: {product.brand}</p>
@@ -71,30 +71,32 @@ const ProductDetail = ({ product }) => {
           <p>Description: {product.description}</p>
         </div>
 
-        <div className="card h-fit p-3 space-y-3">
-          <div>
-            <div className="flex justify-between">
-              <p>Price</p>
-              <p>${product.price}</p>
+        <div className="card h-[250px] p-3">
+          <div className="flex flex-col justify-between h-full">
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <p>Price</p>
+                <p>${product.price}</p>
+              </div>
+              <div className="flex justify-between">
+                <p>Status</p>
+                <p>{inStock > 0 ? `${inStock} - instock` : "Out of stock"}</p>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <p>Status</p>
-              <p>{inStock > 0 ? `${inStock} - instock` : "Out of stock"}</p>
-            </div>
-          </div>
 
-          {inStock > 0 ? (
-            <button
-              onClick={addToCartHandler}
-              className="primary-button w-full"
-            >
-              Add to Cart
-            </button>
-          ) : (
-            <button className="primary-button-disabled w-full">
-              Add to Cart
-            </button>
-          )}
+            {inStock > 0 ? (
+              <button
+                onClick={addToCartHandler}
+                className="primary-button w-full"
+              >
+                Add to Cart
+              </button>
+            ) : (
+              <button className="primary-button-disabled w-full">
+                Add to Cart
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>
