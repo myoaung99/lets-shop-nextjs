@@ -1,5 +1,6 @@
 import Head from "next/head";
 import ProductItem from "../components/LV2/Product/ProductItem";
+import HomeSlider from "../components/LV2/UI/HomeSlider";
 import Product from "../model/Product";
 import db from "../utils/db";
 
@@ -9,7 +10,14 @@ export default function Home({ products }) {
       <Head>
         <title>Home Page</title>
       </Head>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+
+      <HomeSlider />
+
+      <div className="mb-2">
+        <text className="text-black text-xl">Products</text>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
         {products.map((p) => (
           <ProductItem key={p.slug} product={p} />
         ))}
