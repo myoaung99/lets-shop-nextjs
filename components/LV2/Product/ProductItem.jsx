@@ -1,26 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
+import useItemStock from "../../../hooks/useItemStock";
 import { Context } from "../../../Store/context";
 
 const ProductItem = ({ product }) => {
   const cartCtx = useContext(Context);
-  const cartItems = cartCtx.cart.cartItems;
-  const [inStock, setInStock] = useState(0);
+  const [itemStock] = useItemStock(product);
 
-  useEffect(() => {
-    if (product) {
-      const countInCart = cartItems.find((item) => item.slug === product.slug);
-
-      if (!countInCart) {
-        return setInStock(product.countInStock);
-      }
-      setInStock(product.countInStock - countInCart.quantity);
-    }
-  }, [product, cartItems]);
-
-  const addToCartHandler = async () => {
-    if (inStock > 0) {
+  const addToCartHandler = () => {
+    if (itemStock > 0) {
       cartCtx.addToCart(product, 1);
     }
   };
@@ -54,7 +43,7 @@ const ProductItem = ({ product }) => {
 
         <p className="mb-2 text-black">{product.brand}</p>
         <p className="font-semibold mb-1 text-black">${product.price}</p>
-        {inStock > 0 ? (
+        {itemStock > 0 ? (
           <button onClick={addToCartHandler} className="primary-button">
             Add to Cart
           </button>

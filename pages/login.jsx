@@ -59,6 +59,7 @@ const LoginScreen = () => {
       </Head>
       <div className="max-w-screen-md mx-auto text-black">
         <h1 className="text-xl font-bold">Login</h1>
+
         <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col mb-4">
             <label htmlFor="email">Email</label>

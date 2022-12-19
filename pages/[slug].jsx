@@ -1,29 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
 import { Context } from "../Store/context";
 import Product from "../model/Product";
 import db from "../utils/db";
+import useItemStock from "../hooks/useItemStock";
 
 const ProductDetail = ({ product }) => {
-  const [inStock, setInStock] = useState(0);
+  const [inStock, updateStock] = useItemStock(product);
   const router = useRouter();
   const cartCtx = useContext(Context);
-
-  const cartItems = cartCtx.cart.cartItems;
-
-  //? check if there is instock items
-  useEffect(() => {
-    if (product) {
-      const countInCart = cartItems.find((item) => item.slug === product.slug);
-
-      if (!countInCart) {
-        return setInStock(product.countInStock);
-      }
-      setInStock(product.countInStock - countInCart.quantity);
-    }
-  }, [product, cartItems]);
 
   const backHandler = () => {
     router.back();
@@ -31,7 +18,7 @@ const ProductDetail = ({ product }) => {
 
   const addToCartHandler = async () => {
     cartCtx.addToCart(product, 1);
-    setInStock((prev) => prev - 1);
+    updateStock();
   };
 
   if (!product) {
