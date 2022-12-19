@@ -129,17 +129,21 @@ const Footer = () => (
   </footer>
 );
 
+Layout.Navbar = NavBar;
+Layout.Main = Main;
+Layout.Footer = Footer;
+
 /**
- * Compound Usage Component
+ * Usage Component
  * @param {children} param0
  * @returns Layout Component
  */
 const Usage = ({ children }) => {
   return (
     <Layout>
-      <NavBar />
-      <Main>{children}</Main>
-      <Footer />
+      <Layout.Navbar />
+      <Layout.Main>{children}</Layout.Main>
+      <Layout.Footer />
     </Layout>
   );
 };
